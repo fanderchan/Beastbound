@@ -1,0 +1,11 @@
+{
+	"house_red":  {"tex": "res://assets/props/house-red/prop.png",  "draw_w": 5, "block_w": 5, "block_h": 3},
+	"house_blue": {"tex": "res://assets/props/house-blue/prop.png", "draw_w": 5, "block_w": 5, "block_h": 3},
+	"lab":        {"tex": "res://assets/props/lab/prop.png",        "draw_w": 8, "block_w": 8, "block_h": 5},
+	"tree":       {"tex": "res://assets/props/tree/prop.png",       "draw_w": 3, "block_w": 3, "block_h": 2},
+	"sign":       {"tex": "res://assets/props/sign/prop.png",       "draw_w": 1, "block_w": 1, "block_h": 1},
+	"bush":       {"tex": "res://assets/props/bush/prop.png",       "draw_w": 1, "block_w": 1, "block_h": 1},
+	"rock":       {"tex": "res://assets/props/rock/prop.png",       "draw_w": 1, "block_w": 1, "block_h": 1},
+	"flower":     {"tex": "res://assets/props/flower/prop.png",     "draw_w": 1, "block_w": 0, "block_h": 0, "ground": true},
+	"tall_grass": {"tex": "res://assets/props/tall-grass/prop.png", "draw_w": 1, "block_w": 0, "block_h": 0, "ground": true, "encounter": true}
+}

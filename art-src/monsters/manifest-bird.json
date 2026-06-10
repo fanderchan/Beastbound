@@ -1,0 +1,57 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/mon-bird-raw.png",
+  "rows": 1,
+  "cols": 1,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "bird",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 289834,
+      "selected_component_bbox": [
+        368,
+        133,
+        1120,
+        879
+      ],
+      "crop_bbox": [
+        368,
+        133,
+        1120,
+        879
+      ],
+      "padded_crop_bbox": [
+        360,
+        125,
+        1128,
+        887
+      ],
+      "edge_touch": false,
+      "output_size": [
+        768,
+        762
+      ],
+      "status": "accepted",
+      "image": "/tmp/monout/bird/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}

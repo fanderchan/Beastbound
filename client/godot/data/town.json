@@ -1,0 +1,54 @@
+{
+	"name": "青叶镇",
+	"grid": [48, 32],
+	"base": "res://assets/map/town-base.png",
+	"blocked_rects": [
+		[0, 0, 48, 2],
+		[0, 0, 2, 32],
+		[46, 0, 2, 32],
+		[0, 30, 48, 2],
+		[9, 19, 9, 9]
+	],
+	"props": [
+		{"type": "house_red",  "cell": [8, 10]},
+		{"type": "house_blue", "cell": [20, 10]},
+		{"type": "lab",        "cell": [30, 21]},
+		{"type": "tree", "cell": [3, 4]},
+		{"type": "tree", "cell": [14, 3]},
+		{"type": "tree", "cell": [31, 3]},
+		{"type": "tree", "cell": [37, 4]},
+		{"type": "tree", "cell": [43, 3]},
+		{"type": "tree", "cell": [2, 12]},
+		{"type": "tree", "cell": [2, 20]},
+		{"type": "tree", "cell": [2, 28]},
+		{"type": "tree", "cell": [44, 12]},
+		{"type": "tree", "cell": [44, 20]},
+		{"type": "tree", "cell": [44, 28]},
+		{"type": "tree", "cell": [10, 29]},
+		{"type": "tree", "cell": [20, 30]},
+		{"type": "tree", "cell": [30, 29]},
+		{"type": "tree", "cell": [38, 30]},
+		{"type": "tree", "cell": [5, 17]},
+		{"type": "tree", "cell": [41, 26]},
+		{"type": "bush", "cell": [7, 11]},
+		{"type": "bush", "cell": [26, 11]},
+		{"type": "bush", "cell": [14, 8]},
+		{"type": "rock", "cell": [19, 26]},
+		{"type": "flower", "cell": [3, 9]},
+		{"type": "flower", "cell": [13, 12]},
+		{"type": "flower", "cell": [28, 8]},
+		{"type": "flower", "cell": [36, 24]}
+	],
+	"signs": [
+		{"cell": [23, 17], "lines": ["青叶镇\n——崭新冒险开始的地方。"]},
+		{"cell": [27, 4], "lines": ["↑ 北面：1号道路 · 青草小径\n小心野生宝可梦！"]}
+	],
+	"npcs": [
+		{"id": "prof", "sprite": "prof.png", "cell": [33, 22]},
+		{"id": "villager", "sprite": "villager.png", "cell": [22, 12]}
+	],
+	"exits": [
+		{"cells": [[25, 1], [26, 1], [27, 1]], "to": "route1", "spawn": [24, 29], "facing": "up"}
+	],
+	"encounters": []
+}

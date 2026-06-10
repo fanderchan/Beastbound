@@ -1,0 +1,52 @@
+{
+	"name": "1号道路 · 青草小径",
+	"grid": [48, 32],
+	"base": "res://assets/map/route1-base.png",
+	"blocked_rects": [
+		[0, 0, 48, 1],
+		[0, 0, 4, 32],
+		[44, 0, 4, 32],
+		[0, 31, 20, 1],
+		[28, 31, 20, 1]
+	],
+	"grass_rects": [
+		[7, 4, 12, 6],
+		[8, 11, 11, 6],
+		[7, 20, 13, 7],
+		[28, 4, 13, 7],
+		[27, 12, 14, 6],
+		[29, 19, 12, 5]
+	],
+	"props": [
+		{"type": "tree", "cell": [1, 4]},
+		{"type": "tree", "cell": [2, 9]},
+		{"type": "tree", "cell": [1, 14]},
+		{"type": "tree", "cell": [2, 19]},
+		{"type": "tree", "cell": [1, 24]},
+		{"type": "tree", "cell": [2, 29]},
+		{"type": "tree", "cell": [45, 4]},
+		{"type": "tree", "cell": [44, 9]},
+		{"type": "tree", "cell": [45, 14]},
+		{"type": "tree", "cell": [44, 19]},
+		{"type": "tree", "cell": [45, 24]},
+		{"type": "tree", "cell": [44, 29]},
+		{"type": "rock", "cell": [18, 6]},
+		{"type": "rock", "cell": [28, 26]},
+		{"type": "bush", "cell": [25, 2]},
+		{"type": "bush", "cell": [21, 18]}
+	],
+	"signs": [
+		{"cell": [21, 29], "lines": ["1号道路 · 青草小径\n——通往未知的第一步。"]}
+	],
+	"npcs": [
+		{"id": "rival", "sprite": "rival.png", "cell": [24, 3]}
+	],
+	"exits": [
+		{"cells": [[22, 31], [23, 31], [24, 31], [25, 31], [26, 31], [27, 31]], "to": "town", "spawn": [26, 2], "facing": "down"}
+	],
+	"encounters": [
+		{"species": "chirpie", "weight": 0.4, "min_lv": 2, "max_lv": 4},
+		{"species": "fluffrat", "weight": 0.4, "min_lv": 2, "max_lv": 4},
+		{"species": "shroomite", "weight": 0.2, "min_lv": 3, "max_lv": 5}
+	]
+}

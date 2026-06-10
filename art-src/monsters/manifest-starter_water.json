@@ -1,0 +1,57 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/mon-starter-water-raw.png",
+  "rows": 1,
+  "cols": 1,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "starter-water",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 359912,
+      "selected_component_bbox": [
+        364,
+        104,
+        1135,
+        916
+      ],
+      "crop_bbox": [
+        364,
+        104,
+        1135,
+        916
+      ],
+      "padded_crop_bbox": [
+        356,
+        96,
+        1143,
+        924
+      ],
+      "edge_touch": false,
+      "output_size": [
+        787,
+        828
+      ],
+      "status": "accepted",
+      "image": "/tmp/monout/starter-water/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}

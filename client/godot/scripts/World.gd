@@ -87,6 +87,12 @@ func load_map(id: String) -> void:
 	for p in map.get("props", []):
 		_spawn_prop(p, prop_defs, ysort, ground)
 
+	# 草丛矩形区域：每格生成一片草丛
+	for r in map.get("grass_rects", []):
+		for x in range(int(r[0]), int(r[0]) + int(r[2])):
+			for y in range(int(r[1]), int(r[1]) + int(r[3])):
+				_spawn_prop({"type": "tall_grass", "cell": [x, y]}, prop_defs, ysort, ground)
+
 	for n in map.get("npcs", []):
 		_spawn_npc(n, ysort)
 
@@ -374,7 +380,7 @@ func _npc_talk(id: String) -> void:
 				request_battle.emit(get_node("/root/Main")._rival_cfg())
 
 func _pick_starter() -> void:
-	dialog.show_choice("要选择哪一只宝可梦呢？", ["叶芽龙（草）", "炎尾狐（火）", "水灵龟（水）"])
+	dialog.show_choice("要选择哪一只宝可梦呢？", ["叶芽犬（草）", "炎尾狐（火）", "水灵螈（水）"])
 	var idx: int = await dialog.chosen
 	var ids := ["leafdra", "flarefox", "aquaturt"]
 	var mon: Dictionary = Game.make_monster(ids[idx], 5)

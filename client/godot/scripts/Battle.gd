@@ -277,7 +277,7 @@ func _on_fight() -> void:
 		b.text = "%s %s\nPP %d/%d" % [info.name, info.type, int(mv.pp), int(info.pp)]
 		b.custom_minimum_size = Vector2(150, 44)
 		b.disabled = int(mv.pp) <= 0
-		var idx := i
+		var idx: int = i
 		b.pressed.connect(func() -> void: _choose_move(idx))
 		moves_box.add_child(b)
 	_show_menu(Menu.MOVES)
@@ -430,12 +430,12 @@ func _on_bag() -> void:
 	for c in sub_box.get_children():
 		c.queue_free()
 	for id in ["pokeball", "potion"]:
-		var item := Db.ITEMS[id]
+		var item: Dictionary = Db.ITEMS[id]
 		var b := Button.new()
 		b.text = "%s ×%d" % [item.name, int(Game.bag[id])]
 		b.custom_minimum_size = Vector2(310, 40)
 		b.disabled = int(Game.bag[id]) <= 0 or (id == "pokeball" and is_trainer)
-		var iid := id
+		var iid: String = id
 		b.pressed.connect(func() -> void: _use_item(iid))
 		sub_box.add_child(b)
 	var back := Button.new()

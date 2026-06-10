@@ -44,12 +44,12 @@ const MOVES := {
 # ===== 宝可梦图鉴（原创设计） =====
 const SPECIES := {
 	"leafdra": {
-		"name": "叶芽龙", "types": ["草"],
+		"name": "叶芽犬", "types": ["草"],
 		"base": {"hp": 45, "atk": 49, "def": 49, "spd": 45},
 		"moves": ["zhuangji", "tengbian", "yeren", "mengzhuang"],
 		"catch": 0.45, "base_exp": 64,
 		"sprite": "res://assets/monsters/starter_grass.png",
-		"desc": "背上驮着一颗嫩芽的小龙，晒太阳时嫩芽会微微发光。",
+		"desc": "头顶嫩芽、围着叶片披肩的小狗，晒太阳时嫩芽会微微发光。",
 	},
 	"flarefox": {
 		"name": "炎尾狐", "types": ["火"],
@@ -60,12 +60,12 @@ const SPECIES := {
 		"desc": "尾巴尖上燃着小小的火苗，心情越好火苗越旺。",
 	},
 	"aquaturt": {
-		"name": "水灵龟", "types": ["水"],
+		"name": "水灵螈", "types": ["水"],
 		"base": {"hp": 44, "atk": 48, "def": 65, "spd": 43},
 		"moves": ["zhuangji", "shuiqiang", "paomo", "mengzhuang"],
 		"catch": 0.45, "base_exp": 63,
 		"sprite": "res://assets/monsters/starter_water.png",
-		"desc": "壳里储存着清泉水，遇到危险会喷出水柱防身。",
+		"desc": "头顶水滴饰角的小水螈，腮边绒毛会随心情轻轻摆动。",
 	},
 	"chirpie": {
 		"name": "啾啾雀", "types": ["普"],

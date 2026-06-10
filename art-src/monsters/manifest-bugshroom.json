@@ -1,0 +1,57 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/mon-bugshroom-raw.png",
+  "rows": 1,
+  "cols": 1,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "bugshroom",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 319579,
+      "selected_component_bbox": [
+        370,
+        152,
+        1154,
+        828
+      ],
+      "crop_bbox": [
+        370,
+        152,
+        1154,
+        828
+      ],
+      "padded_crop_bbox": [
+        362,
+        144,
+        1162,
+        836
+      ],
+      "edge_touch": false,
+      "output_size": [
+        800,
+        692
+      ],
+      "status": "accepted",
+      "image": "/tmp/monout/bugshroom/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}
