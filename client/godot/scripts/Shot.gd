@@ -8,6 +8,8 @@ var start_screen := ""   # title / world / battle / rival
 var pick_starter := -1   # 0/1/2 自动领取御三家
 var start_map := ""
 var start_cell := Vector2i(-1, -1)
+var auto_confirm := false
+var _ac_t := 0
 
 func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -30,9 +32,22 @@ func _ready() -> void:
 					if parts.size() == 2:
 						start_cell = Vector2i(int(parts[0]), int(parts[1]))
 					i += 1
+			"--auto-confirm":
+				auto_confirm = true
 		i += 1
 
 func _process(_delta: float) -> void:
+	if auto_confirm:
+		_ac_t += 1
+		if _ac_t % 22 == 0:
+			var ev := InputEventAction.new()
+			ev.action = "confirm"
+			ev.pressed = true
+			Input.parse_input_event(ev)
+			var ev2 := InputEventAction.new()
+			ev2.action = "confirm"
+			ev2.pressed = false
+			Input.parse_input_event(ev2)
 	if shot_path == "" or frames_left < 0:
 		return
 	frames_left -= 1
