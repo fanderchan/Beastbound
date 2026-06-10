@@ -2,7 +2,7 @@
   "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/prop-house-red-raw.png",
   "rows": 1,
   "cols": 1,
-  "threshold": 100,
+  "threshold": 110,
   "edge_threshold": 150,
   "component_mode": "largest",
   "component_padding": 8,

@@ -7,5 +7,5 @@
 	"bush":       {"tex": "res://assets/props/bush/prop.png",       "draw_w": 1, "block_w": 1, "block_h": 1},
 	"rock":       {"tex": "res://assets/props/rock/prop.png",       "draw_w": 1, "block_w": 1, "block_h": 1},
 	"flower":     {"tex": "res://assets/props/flower/prop.png",     "draw_w": 1, "block_w": 0, "block_h": 0, "ground": true},
-	"tall_grass": {"tex": "res://assets/props/tall-grass/prop.png", "draw_w": 1, "block_w": 0, "block_h": 0, "ground": true, "encounter": true}
+	"tall_grass": {"tex": "res://assets/props/tall-grass/prop.png", "draw_w": 1.24, "block_w": 0, "block_h": 0, "ground": true, "encounter": true}
 }

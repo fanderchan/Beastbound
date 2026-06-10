@@ -46,7 +46,8 @@ func mon_mine() -> Dictionary:
 
 func _ready() -> void:
 	theme = _theme
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	size = get_viewport_rect().size
 	is_trainer = str(cfg.get("kind", "wild")) == "trainer"
 	if is_trainer:
 		for t in cfg.team:
@@ -64,7 +65,7 @@ func _build_ui() -> void:
 	bg.texture = Util.load_tex("res://assets/bg/battle_grass.png", Vector2i(1280, 720), Color(0.55, 0.75, 0.45))
 	bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(bg)
 
 	# 敌方
@@ -131,8 +132,8 @@ func _build_ui() -> void:
 	# 底部消息 + 指令区
 	var bottom := PanelContainer.new()
 	bottom.theme_type_variation = "DialogPanel"
-	bottom.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	bottom.offset_top = -150
+	bottom.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	bottom.offset_top = -196
 	add_child(bottom)
 	var bh := HBoxContainer.new()
 	bh.add_theme_constant_override("separation", 16)

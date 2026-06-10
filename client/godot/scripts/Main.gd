@@ -5,9 +5,13 @@ var ui_theme: Theme
 var title: TitleScreen
 var world: WorldScreen
 var battle: BattleScreen
+var screen_layer: CanvasLayer   # Control 屏幕的全屏容器
 
 func _ready() -> void:
 	ui_theme = UiTheme.build()
+	screen_layer = CanvasLayer.new()
+	screen_layer.layer = 5
+	add_child(screen_layer)
 	await get_tree().process_frame
 	_route_start()
 
@@ -54,7 +58,7 @@ func _rival_cfg() -> Dictionary:
 func _show_title() -> void:
 	title = TitleScreen.new()
 	title.start_game.connect(_on_start_game)
-	add_child(title)
+	screen_layer.add_child(title)
 
 func _on_start_game() -> void:
 	if is_instance_valid(title):
@@ -75,7 +79,7 @@ func start_battle(cfg: Dictionary) -> void:
 	world.set_active(false)
 	battle = BattleScreen.new(cfg, ui_theme)
 	battle.finished.connect(_on_battle_end)
-	add_child(battle)
+	screen_layer.add_child(battle)
 
 func _on_battle_end(result: Dictionary) -> void:
 	if is_instance_valid(battle):

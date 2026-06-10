@@ -9,7 +9,12 @@ var pick_starter := -1   # 0/1/2 自动领取御三家
 var start_map := ""
 var start_cell := Vector2i(-1, -1)
 var auto_confirm := false
+var walk := ""           # 自动走路方向序列，如 "uuuulldd"
 var _ac_t := 0
+var _walk_t := 0
+var _walk_i := 0
+var _cur_act := ""
+const DIR_ACTIONS := {"u": "move_up", "d": "move_down", "l": "move_left", "r": "move_right"}
 
 func _ready() -> void:
 	var args := OS.get_cmdline_user_args()
@@ -34,22 +39,44 @@ func _ready() -> void:
 					i += 1
 			"--auto-confirm":
 				auto_confirm = true
+			"--walk":
+				if i + 1 < args.size(): walk = args[i + 1]; i += 1
 		i += 1
 
 func _process(_delta: float) -> void:
+	if walk != "":
+		_walk_t += 1
+		if _walk_t % 14 == 1 and _walk_i < walk.length():
+			var c := walk[_walk_i]
+			_walk_i += 1
+			if DIR_ACTIONS.has(c):
+				_cur_act = DIR_ACTIONS[c]
+				Input.action_press(_cur_act)
+		elif _walk_t % 14 == 8 and _cur_act != "":
+			Input.action_release(_cur_act)
+			_cur_act = ""
 	if auto_confirm:
 		_ac_t += 1
+		# 错开节拍：confirm 推进对话，ui_accept 按下聚焦的按钮
 		if _ac_t % 22 == 0:
-			var ev := InputEventAction.new()
-			ev.action = "confirm"
-			ev.pressed = true
-			Input.parse_input_event(ev)
-			var ev2 := InputEventAction.new()
-			ev2.action = "confirm"
-			ev2.pressed = false
-			Input.parse_input_event(ev2)
+			_tap_action("confirm")
+		elif _ac_t % 22 == 11:
+			_tap_action("ui_accept")
 	if shot_path == "" or frames_left < 0:
 		return
+	_take_shot_countdown()
+
+func _tap_action(act: String) -> void:
+	var ev := InputEventAction.new()
+	ev.action = act
+	ev.pressed = true
+	Input.parse_input_event(ev)
+	var ev2 := InputEventAction.new()
+	ev2.action = act
+	ev2.pressed = false
+	Input.parse_input_event(ev2)
+
+func _take_shot_countdown() -> void:
 	frames_left -= 1
 	if frames_left <= 0:
 		var img := get_viewport().get_texture().get_image()

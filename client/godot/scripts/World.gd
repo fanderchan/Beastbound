@@ -43,6 +43,8 @@ func _ready() -> void:
 func set_active(v: bool) -> void:
 	active = v
 	visible = v
+	if is_instance_valid(ui):
+		ui.visible = v
 	set_process(v)
 	set_process_unhandled_input(v)
 
@@ -162,6 +164,10 @@ func _spawn_prop(p: Dictionary, defs: Dictionary, ysort: Node2D, ground: Node2D)
 	spr.position = Vector2(0, -draw_h * 0.5 + float(d.get("y_off", 0)))
 	root.add_child(spr)
 
+	# 草丛等贴地装饰：随机镜像减弱网格感
+	if bool(d.get("encounter", false)):
+		spr.flip_h = randi() % 2 == 0
+
 	if bool(d.get("ground", false)):
 		ground.add_child(root)
 	else:
@@ -202,13 +208,14 @@ func _build_ui() -> void:
 	ui.layer = 10
 	add_child(ui)
 	var theme_root := Control.new()
-	theme_root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	theme_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	theme_root.size = get_viewport().get_visible_rect().size
 	theme_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	theme_root.theme = UiTheme.build()
 	ui.add_child(theme_root)
 
 	dialog = DialogBox.new()
-	dialog.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	dialog.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 	dialog.offset_left = 60
 	dialog.offset_right = -60
 	dialog.offset_top = -170
@@ -226,7 +233,7 @@ func _build_ui() -> void:
 
 	hintbar = Label.new()
 	hintbar.text = "Z 对话/确认 · WASD 移动"
-	hintbar.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	hintbar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
 	hintbar.offset_left = -340
 	hintbar.offset_top = -40
 	hintbar.offset_right = -16
@@ -239,7 +246,7 @@ func _build_ui() -> void:
 
 	flash = ColorRect.new()
 	flash.color = Color(1, 1, 1, 0)
-	flash.set_anchors_preset(Control.PRESET_FULL_RECT)
+	flash.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	theme_root.add_child(flash)
 
