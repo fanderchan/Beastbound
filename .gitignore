@@ -1,0 +1,9 @@
+# Godot 生成文件
+client/godot/.godot/
+*.import
+
+# 运行产物
+.run/
+
+# macOS
+.DS_Store
