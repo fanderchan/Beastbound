@@ -1,0 +1,57 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/prop-tallgrass-raw.png",
+  "rows": 1,
+  "cols": 1,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "tall-grass",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 469216,
+      "selected_component_bbox": [
+        334,
+        124,
+        1184,
+        861
+      ],
+      "crop_bbox": [
+        334,
+        124,
+        1184,
+        861
+      ],
+      "padded_crop_bbox": [
+        326,
+        116,
+        1192,
+        869
+      ],
+      "edge_touch": false,
+      "output_size": [
+        866,
+        753
+      ],
+      "status": "accepted",
+      "image": "client/godot/assets/props/tall-grass/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}

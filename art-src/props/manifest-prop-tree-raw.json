@@ -1,0 +1,57 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/prop-tree-raw.png",
+  "rows": 1,
+  "cols": 1,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "tree",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 495535,
+      "selected_component_bbox": [
+        326,
+        53,
+        1203,
+        905
+      ],
+      "crop_bbox": [
+        326,
+        53,
+        1203,
+        905
+      ],
+      "padded_crop_bbox": [
+        318,
+        45,
+        1211,
+        913
+      ],
+      "edge_touch": false,
+      "output_size": [
+        893,
+        868
+      ],
+      "status": "accepted",
+      "image": "client/godot/assets/props/tree/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}

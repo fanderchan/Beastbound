@@ -1,0 +1,57 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/prop-house-blue-raw.png",
+  "rows": 1,
+  "cols": 1,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "house-blue",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 434697,
+      "selected_component_bbox": [
+        355,
+        119,
+        1176,
+        905
+      ],
+      "crop_bbox": [
+        355,
+        119,
+        1176,
+        905
+      ],
+      "padded_crop_bbox": [
+        347,
+        111,
+        1184,
+        913
+      ],
+      "edge_touch": false,
+      "output_size": [
+        837,
+        802
+      ],
+      "status": "accepted",
+      "image": "client/godot/assets/props/house-blue/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}

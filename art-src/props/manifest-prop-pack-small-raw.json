@@ -1,0 +1,183 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/prop-pack-small-raw.png",
+  "rows": 2,
+  "cols": 2,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "sign",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        768,
+        512
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 42453,
+      "selected_component_bbox": [
+        335,
+        128,
+        576,
+        415
+      ],
+      "crop_bbox": [
+        335,
+        128,
+        576,
+        415
+      ],
+      "padded_crop_bbox": [
+        327,
+        120,
+        584,
+        423
+      ],
+      "edge_touch": false,
+      "output_size": [
+        257,
+        303
+      ],
+      "status": "accepted",
+      "image": "client/godot/assets/props/sign/prop.png"
+    },
+    {
+      "index": 1,
+      "label": "bush",
+      "grid": [
+        0,
+        1
+      ],
+      "source_box": [
+        768,
+        0,
+        1536,
+        512
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 65194,
+      "selected_component_bbox": [
+        110,
+        148,
+        440,
+        418
+      ],
+      "crop_bbox": [
+        110,
+        148,
+        440,
+        418
+      ],
+      "padded_crop_bbox": [
+        102,
+        140,
+        448,
+        426
+      ],
+      "edge_touch": false,
+      "output_size": [
+        346,
+        286
+      ],
+      "status": "accepted",
+      "image": "client/godot/assets/props/bush/prop.png"
+    },
+    {
+      "index": 2,
+      "label": "rock",
+      "grid": [
+        1,
+        0
+      ],
+      "source_box": [
+        0,
+        512,
+        768,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 50311,
+      "selected_component_bbox": [
+        313,
+        86,
+        614,
+        329
+      ],
+      "crop_bbox": [
+        313,
+        86,
+        614,
+        329
+      ],
+      "padded_crop_bbox": [
+        305,
+        78,
+        622,
+        337
+      ],
+      "edge_touch": false,
+      "output_size": [
+        317,
+        259
+      ],
+      "status": "accepted",
+      "image": "client/godot/assets/props/rock/prop.png"
+    },
+    {
+      "index": 3,
+      "label": "flower",
+      "grid": [
+        1,
+        1
+      ],
+      "source_box": [
+        768,
+        512,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 5,
+      "selected_component_area": 43402,
+      "selected_component_bbox": [
+        134,
+        89,
+        428,
+        340
+      ],
+      "crop_bbox": [
+        134,
+        89,
+        428,
+        340
+      ],
+      "padded_crop_bbox": [
+        126,
+        81,
+        436,
+        348
+      ],
+      "edge_touch": false,
+      "output_size": [
+        310,
+        267
+      ],
+      "status": "accepted",
+      "image": "client/godot/assets/props/flower/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}
