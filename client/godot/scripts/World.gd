@@ -36,6 +36,7 @@ const DIRS := {"down": Vector2i(0, 1), "left": Vector2i(-1, 0), "right": Vector2
 const ROW := {"down": 0, "left": 1, "right": 2, "up": 3}
 
 func _ready() -> void:
+	add_to_group("world")
 	y_sort_enabled = false
 	_build_ui()
 	load_map(Game.map_id)

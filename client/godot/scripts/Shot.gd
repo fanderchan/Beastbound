@@ -13,9 +13,12 @@ var start_flags: PackedStringArray = [] # 测试用：预置 flags（逗号分�
 var start_trainer := ""                 # 测试用：直接挑战训练家 id
 var auto_confirm := false
 var walk := ""           # 自动走路方向序列，如 "uuuulldd"
+var presses: Array = []  # [[frame, action], ...] 测试用：指定帧触发按键
+var do_save_at := -1     # 测试用：指定帧调用存档
 var _ac_t := 0
 var _walk_t := 0
 var _walk_i := 0
+var _press_t := 0
 var _cur_act := ""
 const DIR_ACTIONS := {"u": "move_up", "d": "move_down", "l": "move_left", "r": "move_right"}
 
@@ -50,6 +53,15 @@ func _ready() -> void:
 				if i + 1 < args.size(): start_flags = args[i + 1].split(","); i += 1
 			"--trainer":
 				if i + 1 < args.size(): start_trainer = args[i + 1]; i += 1
+			"--press":
+				if i + 1 < args.size():
+					for part in args[i + 1].split(","):
+						var kv: PackedStringArray = part.split("@")
+						if kv.size() == 2:
+							presses.append([int(kv[1]), kv[0]])
+					i += 1
+			"--do-save":
+				if i + 1 < args.size(): do_save_at = int(args[i + 1]); i += 1
 		i += 1
 
 func _process(_delta: float) -> void:
@@ -64,6 +76,16 @@ func _process(_delta: float) -> void:
 		elif _walk_t % 14 == 8 and _cur_act != "":
 			Input.action_release(_cur_act)
 			_cur_act = ""
+	if not presses.is_empty() or do_save_at >= 0:
+		_press_t += 1
+		for p in presses:
+			if int(p[0]) == _press_t:
+				_tap_action(str(p[1]))
+		if _press_t == do_save_at:
+			var w := get_tree().get_first_node_in_group("world")
+			if w != null:
+				Game.save_game(w.cell)
+				print("[Shot] 已存档 map=%s cell=%s" % [Game.map_id, w.cell])
 	if auto_confirm:
 		_ac_t += 1
 		# 错开节拍：confirm 推进对话，ui_accept 按下聚焦的按钮
