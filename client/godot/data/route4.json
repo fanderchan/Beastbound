@@ -1,0 +1,45 @@
+{
+	"name": "胜利之路",
+	"grid": [48, 32],
+	"base": "res://assets/map/route4-base.png",
+	"blocked_rects": [
+		[0, 0, 48, 12],
+		[0, 22, 48, 10],
+		[0, 0, 1, 32],
+		[47, 0, 1, 32]
+	],
+	"grass_rects": [
+		[9, 14, 7, 4],
+		[29, 16, 8, 4]
+	],
+	"props": [
+		{"type": "tree", "cell": [5, 12]},
+		{"type": "tree", "cell": [24, 11]},
+		{"type": "tree", "cell": [42, 12]},
+		{"type": "tree", "cell": [16, 22]},
+		{"type": "tree", "cell": [38, 22]},
+		{"type": "rock", "cell": [18, 15]},
+		{"type": "rock", "cell": [20, 19]},
+		{"type": "rock", "cell": [40, 17]},
+		{"type": "rock", "cell": [7, 20]},
+		{"type": "rock", "cell": [26, 14]},
+		{"type": "rock", "cell": [44, 20]},
+		{"type": "bush", "cell": [22, 13]}
+	],
+	"signs": [
+		{"cell": [5, 15], "lines": ["胜利之路\n——冠军就在前方！"]}
+	],
+	"npcs": [
+		{"id": "tr4a", "sprite": "boy.png", "cell": [14, 17], "kind": "trainer", "trainer": "t_route4_a"},
+		{"id": "tr4b", "sprite": "girl.png", "cell": [34, 15], "kind": "trainer", "trainer": "t_route4_b"}
+	],
+	"exits": [
+		{"cells": [[0, 13], [0, 14], [0, 15], [0, 16], [0, 17], [0, 18], [0, 19], [0, 20], [0, 21]], "to": "embertown", "spawn": [45, 16], "facing": "left"},
+		{"cells": [[47, 13], [47, 14], [47, 15], [47, 16], [47, 17], [47, 18], [47, 19], [47, 20], [47, 21]], "to": "league", "spawn": [3, 17], "facing": "right"}
+	],
+	"encounters": [
+		{"species": "magmander", "weight": 0.35, "min_lv": 17, "max_lv": 19},
+		{"species": "boulderturt", "weight": 0.35, "min_lv": 17, "max_lv": 19},
+		{"species": "thunderhawk", "weight": 0.3, "min_lv": 18, "max_lv": 20}
+	]
+}

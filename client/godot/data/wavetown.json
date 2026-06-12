@@ -1,0 +1,49 @@
+{
+	"name": "临波市",
+	"grid": [48, 32],
+	"base": "res://assets/map/wavetown-base.png",
+	"blocked_rects": [
+		[0, 0, 48, 2],
+		[0, 0, 2, 32],
+		[46, 0, 2, 32],
+		[0, 24, 48, 8]
+	],
+	"props": [
+		{"type": "gym",    "cell": [26, 8]},
+		{"type": "center", "cell": [8, 11]},
+		{"type": "shop",   "cell": [37, 11]},
+		{"type": "house_blue", "cell": [14, 5]},
+		{"type": "house_red", "cell": [36, 4]},
+		{"type": "tree", "cell": [3, 5]},
+		{"type": "tree", "cell": [2, 14]},
+		{"type": "tree", "cell": [44, 6]},
+		{"type": "tree", "cell": [44, 16]},
+		{"type": "tree", "cell": [8, 20]},
+		{"type": "tree", "cell": [40, 20]},
+		{"type": "rock", "cell": [20, 21]},
+		{"type": "rock", "cell": [30, 22]},
+		{"type": "flower", "cell": [13, 16]},
+		{"type": "flower", "cell": [33, 17]},
+		{"type": "flower", "cell": [22, 5]},
+		{"type": "bush", "cell": [18, 12]}
+	],
+	"signs": [
+		{"cell": [20, 18], "lines": ["临波市\n——海风与浪花之城。"]},
+		{"cell": [25, 11], "lines": ["临波宝可梦道馆\n馆主：澜心\n「让海浪检验羁绊！」"]},
+		{"cell": [26, 22], "lines": ["南面是临波海岸，\n禁止游泳哦！"]},
+		{"cell": [21, 3], "lines": ["↑ 北面：3号道路\n通往烬原镇（需临波徽章）"]}
+	],
+	"npcs": [
+		{"id": "gym2", "sprite": "gym2.png", "cell": [29, 11], "kind": "trainer", "trainer": "gym2"},
+		{"id": "nurse2", "sprite": "nurse.png", "cell": [10, 13], "kind": "nurse"},
+		{"id": "clerk2", "sprite": "clerk.png", "cell": [39, 13], "kind": "shop"},
+		{"id": "vill_wave", "sprite": "villager.png", "cell": [16, 19], "kind": "dialog",
+		 "lines": ["渔夫：澜心馆主的水系宝可梦\n又快又猛，小心点！", "渔夫：电属性和草属性的招式\n能克制水属性。"]}
+	],
+	"exits": [
+		{"cells": [[0, 15], [0, 16], [0, 17], [0, 18], [0, 19]], "to": "route2", "spawn": [45, 16], "facing": "left"},
+		{"cells": [[22, 0], [23, 0], [24, 0], [25, 0], [26, 0]], "to": "route3", "spawn": [24, 29], "facing": "up",
+		 "require_flag": "badge2", "deny_lines": ["联盟职员：3号道路山势险峻。", "联盟职员：需要临波徽章才能通行，\n先去挑战澜心馆主吧！"]}
+	],
+	"encounters": []
+}

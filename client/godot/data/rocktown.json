@@ -1,0 +1,54 @@
+{
+	"name": "岩岸镇",
+	"grid": [48, 32],
+	"base": "res://assets/map/rocktown-base.png",
+	"blocked_rects": [
+		[0, 0, 48, 2],
+		[0, 0, 2, 32],
+		[46, 0, 2, 32],
+		[0, 30, 22, 2],
+		[27, 30, 21, 2]
+	],
+	"props": [
+		{"type": "gym",    "cell": [20, 8]},
+		{"type": "center", "cell": [7, 14]},
+		{"type": "shop",   "cell": [35, 14]},
+		{"type": "house_red", "cell": [9, 5]},
+		{"type": "house_blue", "cell": [34, 5]},
+		{"type": "tree", "cell": [3, 4]},
+		{"type": "tree", "cell": [16, 3]},
+		{"type": "tree", "cell": [29, 3]},
+		{"type": "tree", "cell": [43, 4]},
+		{"type": "tree", "cell": [2, 12]},
+		{"type": "tree", "cell": [2, 20]},
+		{"type": "tree", "cell": [44, 12]},
+		{"type": "tree", "cell": [44, 20]},
+		{"type": "tree", "cell": [6, 28]},
+		{"type": "tree", "cell": [40, 28]},
+		{"type": "rock", "cell": [15, 12]},
+		{"type": "rock", "cell": [31, 11]},
+		{"type": "rock", "cell": [18, 24]},
+		{"type": "rock", "cell": [33, 25]},
+		{"type": "flower", "cell": [12, 20]},
+		{"type": "flower", "cell": [30, 20]},
+		{"type": "flower", "cell": [22, 6]}
+	],
+	"signs": [
+		{"cell": [22, 26], "lines": ["岩岸镇\n——岩石与意志之城。"]},
+		{"cell": [19, 11], "lines": ["岩岸宝可梦道馆\n馆主：磐石\n「如磐石般坚定！」"]},
+		{"cell": [44, 17], "lines": ["→ 东面：2号道路\n通往临波市（需岩岸徽章）"]}
+	],
+	"npcs": [
+		{"id": "gym1", "sprite": "gym1.png", "cell": [23, 11], "kind": "trainer", "trainer": "gym1"},
+		{"id": "nurse1", "sprite": "nurse.png", "cell": [9, 16], "kind": "nurse"},
+		{"id": "clerk1", "sprite": "clerk.png", "cell": [37, 16], "kind": "shop"},
+		{"id": "vill_rock", "sprite": "villager.png", "cell": [28, 18], "kind": "dialog",
+		 "lines": ["居民：磐石馆主可严格了，\n记得先去宝可梦中心恢复！", "居民：水属性和草属性的招式\n对岩石属性特别有效哦。"]}
+	],
+	"exits": [
+		{"cells": [[22, 31], [23, 31], [24, 31], [25, 31], [26, 31]], "to": "route1", "spawn": [24, 2], "facing": "down"},
+		{"cells": [[47, 14], [47, 15], [47, 16], [47, 17], [47, 18]], "to": "route2", "spawn": [2, 16], "facing": "right",
+		 "require_flag": "badge1", "deny_lines": ["联盟职员：前方是2号道路。", "联盟职员：持有岩岸徽章的训练家\n才能通行，去挑战道馆吧！"]}
+	],
+	"encounters": []
+}

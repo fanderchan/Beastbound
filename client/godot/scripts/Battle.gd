@@ -16,13 +16,18 @@ var enemy: Dictionary          # 敌方当前宝可梦实例
 var busy := true
 var waiting_msg := false
 var menu := Menu.NONE
-var result := {"whiteout": false, "beat_rival": false}
+var result := {"whiteout": false}
+# 战斗内临时能力等级 -3..+3
+var my_stages := {"atk": 0, "def": 0, "spd": 0}
+var en_stages := {"atk": 0, "def": 0, "spd": 0}
 
 var my_spr: TextureRect
 var en_spr: TextureRect
 var my_panel: PanelContainer
 var en_panel: PanelContainer
 var my_name: Label
+var my_status: Label
+var en_status: Label
 var my_lv: Label
 var my_hp_bar: ProgressBar
 var my_hp_text: Label
@@ -55,9 +60,23 @@ func _ready() -> void:
 	else:
 		enemy_team.append(Game.make_monster(str(cfg.species), int(cfg.level)))
 	enemy = enemy_team[0]
+	Game.mark_seen(str(enemy.species))
 	my_idx = maxi(Game.first_alive_index(), 0)
 	_build_ui()
 	_intro()
+
+# 能力等级倍率 + 异常修正后的实效属性
+func _stage_mult(s: int) -> float:
+	return (2.0 + s) / 2.0 if s >= 0 else 2.0 / (2.0 - s)
+
+func _eff_stat(mon: Dictionary, stat: String) -> float:
+	var stages: Dictionary = my_stages if mon == mon_mine() else en_stages
+	var v := float(mon.stats[stat]) * _stage_mult(int(stages[stat]))
+	if stat == "atk" and str(mon.status) == "brn":
+		v *= 0.5
+	if stat == "spd" and str(mon.status) == "par":
+		v *= 0.5
+	return v
 
 # ============== UI 构建 ==============
 func _build_ui() -> void:
@@ -96,6 +115,7 @@ func _build_ui() -> void:
 	var eh := HBoxContainer.new()
 	ev.add_child(eh)
 	en_name = Label.new(); en_name.add_theme_font_size_override("font_size", 26); eh.add_child(en_name)
+	en_status = Label.new(); en_status.add_theme_font_size_override("font_size", 18); eh.add_child(en_status)
 	var esp := Control.new(); esp.size_flags_horizontal = Control.SIZE_EXPAND_FILL; eh.add_child(esp)
 	en_lv = Label.new(); en_lv.add_theme_font_size_override("font_size", 22); eh.add_child(en_lv)
 	en_hp_bar = ProgressBar.new()
@@ -113,6 +133,7 @@ func _build_ui() -> void:
 	var mh := HBoxContainer.new()
 	mv.add_child(mh)
 	my_name = Label.new(); my_name.add_theme_font_size_override("font_size", 26); mh.add_child(my_name)
+	my_status = Label.new(); my_status.add_theme_font_size_override("font_size", 18); mh.add_child(my_status)
 	var msp := Control.new(); msp.size_flags_horizontal = Control.SIZE_EXPAND_FILL; mh.add_child(msp)
 	my_lv = Label.new(); my_lv.add_theme_font_size_override("font_size", 22); mh.add_child(my_lv)
 	my_hp_bar = ProgressBar.new()
@@ -196,9 +217,17 @@ func _hp_color(ratio: float) -> Color:
 	if ratio > 0.2: return Color(0.95, 0.80, 0.25)
 	return Color(0.90, 0.30, 0.25)
 
+func _status_text(mon: Dictionary, lbl: Label) -> void:
+	var st := str(mon.get("status", ""))
+	lbl.text = " %s" % Db.STATUS_NAMES.get(st, "") if st != "" else ""
+	if st != "":
+		lbl.add_theme_color_override("font_color", Db.STATUS_COLORS.get(st, Color.WHITE))
+
 func _refresh_panels() -> void:
 	var m := mon_mine()
 	my_name.text = str(m.name)
+	_status_text(m, my_status)
+	_status_text(enemy, en_status)
 	my_lv.text = "Lv.%d" % int(m.level)
 	my_hp_bar.max_value = int(m.stats.maxhp)
 	my_hp_bar.value = int(m.hp)
@@ -305,7 +334,7 @@ func _enemy_move_idx() -> int:
 func _do_round(my_move_idx: int) -> void:
 	busy = true
 	var m := mon_mine()
-	var en_first: bool = int(enemy.stats.spd) > int(m.stats.spd) or (int(enemy.stats.spd) == int(m.stats.spd) and randf() < 0.5)
+	var en_first: bool = _eff_stat(enemy, "spd") > _eff_stat(m, "spd") or (_eff_stat(enemy, "spd") == _eff_stat(m, "spd") and randf() < 0.5)
 	var order: Array = []
 	if en_first:
 		order = [[enemy, m, _enemy_move_idx(), en_spr, my_spr], [m, enemy, my_move_idx, my_spr, en_spr]]
@@ -317,12 +346,33 @@ func _do_round(my_move_idx: int) -> void:
 		await _use_move(step[0], step[1], int(step[2]), step[3], step[4])
 		if await _check_faints():
 			return
+	if await _end_of_turn():
+		return
 	busy = false
 	_show_menu(Menu.COMMAND)
+
+# 回合末毒/灼伤结算；返回 true 表示战斗结束
+func _end_of_turn() -> bool:
+	for mon in [mon_mine(), enemy]:
+		if int(mon.hp) <= 0:
+			continue
+		var st := str(mon.get("status", ""))
+		if st in ["psn", "brn"]:
+			var dot := maxi(int(mon.stats.maxhp) / 8, 1)
+			mon.hp = maxi(int(mon.hp) - dot, 0)
+			_refresh_panels()
+			await _msg("%s 因%s受到了伤害！" % [mon.name, Db.STATUS_NAMES[st]])
+			if await _check_faints():
+				return true
+	return false
 
 func _use_move(att: Dictionary, dfd: Dictionary, move_idx: int, att_spr: TextureRect, dfd_spr: TextureRect) -> void:
 	if move_idx < 0:
 		await _msg("%s 不知所措！" % att.name)
+		return
+	# 麻痹：25% 概率无法行动
+	if str(att.get("status", "")) == "par" and randf() < 0.25:
+		await _msg("%s 麻痹了，无法行动！" % att.name)
 		return
 	var slot: Dictionary = att.moves[move_idx]
 	var info := Db.move(str(slot.id))
@@ -341,32 +391,63 @@ func _use_move(att: Dictionary, dfd: Dictionary, move_idx: int, att_spr: Texture
 		await _msg("但是没有命中！")
 		return
 
-	var eff := Db.effectiveness(str(info.type), Db.species(str(dfd.species)).types)
-	var stab: float = 1.5 if str(info.type) in Db.species(str(att.species)).types else 1.0
-	var lv := int(att.level)
-	var dmg := int((((2.0 * lv / 5.0 + 2.0) * float(info.power) * float(att.stats.atk) / float(dfd.stats.def)) / 50.0 + 2.0) * eff * stab * randf_range(0.85, 1.0))
-	dmg = maxi(dmg, 1)
-	dfd.hp = maxi(int(dfd.hp) - dmg, 0)
+	var dmg := 0
+	if int(info.power) > 0:
+		var eff := Db.effectiveness(str(info.type), Db.species(str(dfd.species)).types)
+		var stab: float = 1.5 if str(info.type) in Db.species(str(att.species)).types else 1.0
+		var crit: float = 1.5 if randf() < 0.0625 else 1.0
+		var lv := int(att.level)
+		dmg = int((((2.0 * lv / 5.0 + 2.0) * float(info.power) * _eff_stat(att, "atk") / maxf(_eff_stat(dfd, "def"), 1.0)) / 50.0 + 2.0) * eff * stab * crit * randf_range(0.85, 1.0))
+		dmg = maxi(dmg, 1)
+		dfd.hp = maxi(int(dfd.hp) - dmg, 0)
 
-	# 受击闪烁 + 血条动画
-	var tw2 := create_tween()
-	tw2.tween_property(dfd_spr, "modulate", Color(1, 0.4, 0.4), 0.08)
-	tw2.tween_property(dfd_spr, "modulate", Color(1, 1, 1), 0.08)
-	tw2.set_loops(2)
-	var bar: ProgressBar = en_hp_bar if dfd == enemy else my_hp_bar
-	var tw3 := create_tween()
-	tw3.tween_property(bar, "value", int(dfd.hp), 0.4)
-	await tw3.finished
-	_refresh_panels()
-
-	if eff > 1.5:
-		await _msg("效果绝佳！")
-	elif eff < 0.9:
-		await _msg("收效甚微……")
-	if bool(info.get("drain", false)) and dmg > 0:
-		att.hp = mini(int(att.hp) + maxi(dmg / 2, 1), int(att.stats.maxhp))
+		# 受击闪烁 + 血条动画
+		var tw2 := create_tween()
+		tw2.tween_property(dfd_spr, "modulate", Color(1, 0.4, 0.4), 0.08)
+		tw2.tween_property(dfd_spr, "modulate", Color(1, 1, 1), 0.08)
+		tw2.set_loops(2)
+		var bar: ProgressBar = en_hp_bar if dfd == enemy else my_hp_bar
+		var tw3 := create_tween()
+		tw3.tween_property(bar, "value", int(dfd.hp), 0.4)
+		await tw3.finished
 		_refresh_panels()
-		await _msg("%s 吸取了对手的体力！" % att.name)
+
+		if crit > 1.0:
+			await _msg("会心一击！")
+		if eff > 1.5:
+			await _msg("效果绝佳！")
+		elif eff < 0.9:
+			await _msg("收效甚微……")
+		if bool(info.get("drain", false)) and dmg > 0:
+			att.hp = mini(int(att.hp) + maxi(dmg / 2, 1), int(att.stats.maxhp))
+			_refresh_panels()
+			await _msg("%s 吸取了对手的体力！" % att.name)
+
+	# 附加效果
+	var fx: Dictionary = info.get("effect", {})
+	if not fx.is_empty() and randf() * 100.0 <= float(fx.get("chance", 100)):
+		var target: Dictionary = att if str(fx.get("target", "enemy")) == "self" else dfd
+		if int(target.hp) > 0:
+			match str(fx.kind):
+				"status":
+					if str(target.get("status", "")) == "":
+						target.status = str(fx.status)
+						_refresh_panels()
+						await _msg("%s %s了！" % [target.name, Db.STATUS_NAMES[str(fx.status)]])
+					elif int(info.power) == 0:
+						await _msg("但是没有效果……")
+				"stage":
+					var stages: Dictionary = my_stages if target == mon_mine() else en_stages
+					var stat := str(fx.stat)
+					var delta := int(fx.delta)
+					var cur := int(stages[stat])
+					if (delta > 0 and cur >= 3) or (delta < 0 and cur <= -3):
+						await _msg("但是没有效果……")
+					else:
+						stages[stat] = clampi(cur + delta, -3, 3)
+						var stat_names := {"atk": "攻击", "def": "防御", "spd": "速度"}
+						var dir_text := "提升" if delta > 0 else "降低"
+						await _msg("%s 的%s%s了！" % [target.name, stat_names[stat], dir_text])
 
 # 返回 true 表示战斗已结束
 func _check_faints() -> bool:
@@ -381,6 +462,8 @@ func _check_faints() -> bool:
 		enemy_idx += 1
 		if enemy_idx < enemy_team.size():
 			enemy = enemy_team[enemy_idx]
+			Game.mark_seen(str(enemy.species))
+			en_stages = {"atk": 0, "def": 0, "spd": 0}
 			en_spr.modulate.a = 0.0
 			_refresh_panels()
 			await _msg("%s 派出了 %s！" % [str(cfg.get("trainer_name", "训练家")), enemy.name])
@@ -392,7 +475,12 @@ func _check_faints() -> bool:
 		if is_trainer:
 			for line in cfg.get("win_lines", []):
 				await _msg(str(line))
-			result.beat_rival = true
+			result["won"] = true
+			result["trainer_id"] = str(cfg.get("trainer_id", ""))
+			var reward := int(cfg.get("reward", 0))
+			if reward > 0:
+				Game.money += reward
+				await _msg("获得了 %d 元奖金！" % reward)
 		_end()
 		return true
 	if int(m.hp) <= 0:
@@ -421,6 +509,7 @@ func _fade_in(spr: TextureRect) -> void:
 
 func _force_switch() -> void:
 	my_idx = Game.first_alive_index()
+	my_stages = {"atk": 0, "def": 0, "spd": 0}
 	_refresh_panels()
 	my_spr.modulate.a = 0.0
 	await _msg("就决定是你了，%s！" % mon_mine().name)
@@ -430,12 +519,15 @@ func _force_switch() -> void:
 func _on_bag() -> void:
 	for c in sub_box.get_children():
 		c.queue_free()
-	for id in ["pokeball", "potion"]:
+	for id in Db.SHOP_STOCK:
+		var cnt := int(Game.bag.get(id, 0))
+		if cnt <= 0 and id != "pokeball" and id != "potion":
+			continue
 		var item: Dictionary = Db.ITEMS[id]
 		var b := Button.new()
-		b.text = "%s ×%d" % [item.name, int(Game.bag[id])]
+		b.text = "%s ×%d" % [item.name, cnt]
 		b.custom_minimum_size = Vector2(310, 40)
-		b.disabled = int(Game.bag[id]) <= 0 or (id == "pokeball" and is_trainer)
+		b.disabled = cnt <= 0 or (id == "pokeball" and is_trainer)
 		var iid: String = id
 		b.pressed.connect(func() -> void: _use_item(iid))
 		sub_box.add_child(b)
@@ -454,15 +546,24 @@ func _use_item(id: String) -> void:
 	busy = true
 	Game.bag[id] = int(Game.bag[id]) - 1
 	match id:
-		"potion":
+		"potion", "super_potion":
 			var m := mon_mine()
-			var heal: int = mini(int(Db.ITEMS.potion.heal), int(m.stats.maxhp) - int(m.hp))
+			var heal: int = mini(int(Db.ITEMS[id].heal), int(m.stats.maxhp) - int(m.hp))
 			m.hp = int(m.hp) + heal
 			var tw := create_tween()
 			tw.tween_property(my_hp_bar, "value", int(m.hp), 0.4)
 			await tw.finished
 			_refresh_panels()
 			await _msg("%s 恢复了 %d 点 HP！" % [m.name, heal])
+		"full_heal":
+			var m2 := mon_mine()
+			var st := str(m2.get("status", ""))
+			m2.status = ""
+			_refresh_panels()
+			if st != "":
+				await _msg("%s 的%s痊愈了！" % [m2.name, Db.STATUS_NAMES[st]])
+			else:
+				await _msg("但是没有效果……")
 		"pokeball":
 			await _throw_ball()
 			if result.get("caught", false):
@@ -470,6 +571,8 @@ func _use_item(id: String) -> void:
 	# 道具消耗回合：敌方行动
 	await _use_move(enemy, mon_mine(), _enemy_move_idx(), en_spr, my_spr)
 	if await _check_faints():
+		return
+	if await _end_of_turn():
 		return
 	busy = false
 	_show_menu(Menu.COMMAND)
@@ -499,10 +602,12 @@ func _throw_ball() -> void:
 		await tws.finished
 		await get_tree().create_timer(0.15).timeout
 	var ratio := float(enemy.hp) / float(enemy.stats.maxhp)
-	var chance: float = clampf((1.0 - 0.65 * ratio) * float(Db.species(str(enemy.species)).get("catch", 0.5)) * 1.6, 0.08, 0.95)
+	var status_bonus: float = 1.4 if str(enemy.get("status", "")) != "" else 1.0
+	var chance: float = clampf((1.0 - 0.65 * ratio) * float(Db.species(str(enemy.species)).get("catch", 0.5)) * 1.6 * status_bonus, 0.08, 0.95)
 	if randf() < chance:
 		ball.modulate = Color(0.8, 1.0, 0.8)
 		await _msg("太好了！%s 被收服了！" % enemy.name)
+		Game.mark_caught(str(enemy.species))
 		var mon: Dictionary = enemy.duplicate(true)
 		if Game.add_to_party(mon):
 			await _msg("%s 加入了你的队伍！" % mon.name)
@@ -544,12 +649,15 @@ func _switch_to(idx: int) -> void:
 	await _fade_out(my_spr)
 	await _msg("回来吧，%s！" % mon_mine().name)
 	my_idx = idx
+	my_stages = {"atk": 0, "def": 0, "spd": 0}
 	_refresh_panels()
 	await _msg("就决定是你了，%s！" % mon_mine().name)
 	await _fade_in(my_spr)
 	# 切换消耗回合
 	await _use_move(enemy, mon_mine(), _enemy_move_idx(), en_spr, my_spr)
 	if await _check_faints():
+		return
+	if await _end_of_turn():
 		return
 	busy = false
 	_show_menu(Menu.COMMAND)
@@ -574,6 +682,8 @@ func _on_run() -> void:
 		await _msg("没能逃掉！")
 		await _use_move(enemy, mon_mine(), _enemy_move_idx(), en_spr, my_spr)
 		if await _check_faints():
+			return
+		if await _end_of_turn():
 			return
 		busy = false
 		_show_menu(Menu.COMMAND)

@@ -1,0 +1,45 @@
+{
+	"name": "3号道路 · 林荫山道",
+	"grid": [48, 32],
+	"base": "res://assets/map/route3-base.png",
+	"blocked_rects": [
+		[0, 0, 14, 32],
+		[34, 0, 14, 32],
+		[0, 0, 48, 1],
+		[0, 31, 48, 1]
+	],
+	"grass_rects": [
+		[16, 7, 7, 5],
+		[24, 18, 8, 5]
+	],
+	"props": [
+		{"type": "tree", "cell": [14, 4]},
+		{"type": "tree", "cell": [31, 6]},
+		{"type": "tree", "cell": [14, 14]},
+		{"type": "tree", "cell": [31, 16]},
+		{"type": "tree", "cell": [14, 24]},
+		{"type": "tree", "cell": [31, 26]},
+		{"type": "rock", "cell": [20, 14]},
+		{"type": "rock", "cell": [27, 24]},
+		{"type": "bush", "cell": [17, 16]},
+		{"type": "bush", "cell": [29, 8]},
+		{"type": "flower", "cell": [24, 13]},
+		{"type": "flower", "cell": [19, 27]}
+	],
+	"signs": [
+		{"cell": [17, 28], "lines": ["3号道路 · 林荫山道\n↓ 临波市　↑ 烬原镇"]}
+	],
+	"npcs": [
+		{"id": "tr3a", "sprite": "girl.png", "cell": [20, 22], "kind": "trainer", "trainer": "t_route3_a"},
+		{"id": "tr3b", "sprite": "girl.png", "cell": [28, 9], "kind": "trainer", "trainer": "t_route3_b"}
+	],
+	"exits": [
+		{"cells": [[22, 31], [23, 31], [24, 31], [25, 31], [26, 31]], "to": "wavetown", "spawn": [24, 2], "facing": "down"},
+		{"cells": [[22, 0], [23, 0], [24, 0], [25, 0], [26, 0]], "to": "embertown", "spawn": [24, 29], "facing": "up"}
+	],
+	"encounters": [
+		{"species": "bubblefrog", "weight": 0.35, "min_lv": 12, "max_lv": 14},
+		{"species": "nightowl", "weight": 0.35, "min_lv": 12, "max_lv": 15},
+		{"species": "shroomite", "weight": 0.3, "min_lv": 13, "max_lv": 15}
+	]
+}

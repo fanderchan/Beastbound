@@ -1,0 +1,44 @@
+{
+	"name": "2号道路 · 砾石坡",
+	"grid": [48, 32],
+	"base": "res://assets/map/route2-base.png",
+	"blocked_rects": [
+		[0, 0, 48, 12],
+		[0, 22, 48, 10],
+		[0, 0, 1, 32],
+		[47, 0, 1, 32]
+	],
+	"grass_rects": [
+		[7, 13, 9, 4],
+		[25, 17, 10, 4]
+	],
+	"props": [
+		{"type": "tree", "cell": [4, 12]},
+		{"type": "tree", "cell": [20, 11]},
+		{"type": "tree", "cell": [40, 12]},
+		{"type": "tree", "cell": [12, 22]},
+		{"type": "tree", "cell": [36, 22]},
+		{"type": "rock", "cell": [18, 14]},
+		{"type": "rock", "cell": [22, 19]},
+		{"type": "rock", "cell": [38, 16]},
+		{"type": "rock", "cell": [6, 19]},
+		{"type": "bush", "cell": [30, 13]},
+		{"type": "bush", "cell": [14, 20]}
+	],
+	"signs": [
+		{"cell": [5, 15], "lines": ["2号道路 · 砾石坡\n← 岩岸镇　→ 临波市"]}
+	],
+	"npcs": [
+		{"id": "tr2a", "sprite": "boy.png", "cell": [16, 17], "kind": "trainer", "trainer": "t_route2_a"},
+		{"id": "tr2b", "sprite": "boy.png", "cell": [32, 15], "kind": "trainer", "trainer": "t_route2_b"}
+	],
+	"exits": [
+		{"cells": [[0, 13], [0, 14], [0, 15], [0, 16], [0, 17], [0, 18], [0, 19], [0, 20], [0, 21]], "to": "rocktown", "spawn": [45, 16], "facing": "left"},
+		{"cells": [[47, 13], [47, 14], [47, 15], [47, 16], [47, 17], [47, 18], [47, 19], [47, 20], [47, 21]], "to": "wavetown", "spawn": [3, 17], "facing": "right"}
+	],
+	"encounters": [
+		{"species": "rockrab", "weight": 0.35, "min_lv": 7, "max_lv": 9},
+		{"species": "voltweasel", "weight": 0.35, "min_lv": 7, "max_lv": 9},
+		{"species": "fluffrat", "weight": 0.3, "min_lv": 8, "max_lv": 10}
+	]
+}

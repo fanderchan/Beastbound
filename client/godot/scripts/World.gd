@@ -199,7 +199,7 @@ func _spawn_npc(n: Dictionary, ysort: Node2D) -> void:
 	root.position = _feet_pos(c)
 	ysort.add_child(root)
 	blocked[c] = true
-	interactables[c] = {"kind": "npc", "id": str(n.id)}
+	interactables[c] = {"kind": "npc", "id": str(n.id), "data": n}
 	npc_nodes[str(n.id)] = root
 
 # ===================== UI =====================
@@ -232,7 +232,7 @@ func _build_ui() -> void:
 	theme_root.add_child(toast)
 
 	hintbar = Label.new()
-	hintbar.text = "Z 对话/确认 · WASD 移动"
+	hintbar.text = "Z 确认 · C 菜单 · WASD 移动"
 	hintbar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_RIGHT)
 	hintbar.offset_left = -340
 	hintbar.offset_top = -40
@@ -325,6 +325,10 @@ func _roll_encounter() -> void:
 		request_battle.emit({"kind": "wild", "species": str(pick.species), "level": lv}))
 
 func _use_exit(e: Dictionary) -> void:
+	# 徽章门禁
+	if e.has("require_flag") and not Game.flags.get(str(e.require_flag), false):
+		dialog.show_lines(e.get("deny_lines", ["前面的路还不能通行。"]))
+		return
 	moving = true
 	Game.pending_spawn = Vector2i(int(e.spawn[0]), int(e.spawn[1]))
 	Game.pending_facing = str(e.get("facing", "down"))
@@ -347,18 +351,42 @@ func _unhandled_input(event: InputEvent) -> void:
 		var target: Vector2i = cell + DIRS[facing]
 		if interactables.has(target):
 			_interact(interactables[target], target)
+	elif event.is_action_pressed("menu"):
+		_open_menu()
+
+func _open_menu() -> void:
+	var m := GameMenu.new()
+	m.world_cell = cell
+	active = false
+	m.closed.connect(func() -> void: active = true)
+	ui.add_child(m)
 
 func _interact(it: Dictionary, _c: Vector2i) -> void:
 	match str(it.kind):
 		"sign":
 			dialog.show_lines(it.lines)
 		"npc":
-			_npc_talk(str(it.id))
+			_npc_talk(str(it.id), it.get("data", {}))
 
-func _npc_talk(id: String) -> void:
+func _npc_talk(id: String, data: Dictionary) -> void:
+	# 数据驱动 NPC
+	match str(data.get("kind", "")):
+		"nurse":
+			_nurse_talk()
+			return
+		"shop":
+			_shop_talk()
+			return
+		"trainer":
+			_trainer_talk(str(data.trainer))
+			return
+		"dialog":
+			dialog.show_lines(data.get("lines", ["……"]))
+			return
+	# 剧情 NPC
 	match id:
 		"prof":
-			if not Game.flags.got_starter:
+			if not Game.flags.get("got_starter", false):
 				dialog.show_lines([
 					"青木博士：哦哦，你就是隔壁家的孩子吧！",
 					"青木博士：来得正好！我这里有三只\n刚出生的宝可梦伙伴。",
@@ -366,25 +394,72 @@ func _npc_talk(id: String) -> void:
 				])
 				await dialog.finished
 				_pick_starter()
-			elif not Game.flags.beat_rival:
+			elif not Game.flags.get("beaten_rival1", false):
 				dialog.show_lines([
 					"青木博士：北边的青草小径上\n有很多野生宝可梦。",
 					"青木博士：多多锻炼，去会一会\n在那里等你的小烈吧！",
 				])
+			elif Game.flags.get("game_clear", false):
+				dialog.show_lines(["青木博士：冠军！我为你骄傲！\n图鉴的完成也拜托你了！"])
 			else:
-				dialog.show_lines(["青木博士：了不起的训练家！\n继续和伙伴一起前进吧！"])
+				dialog.show_lines([
+					"青木博士：北方的城镇里有宝可梦道馆。",
+					"青木博士：集齐 3 枚徽章就能挑战\n青峰联盟的冠军！加油！",
+				])
 		"villager":
 			dialog.show_lines([
 				"村民：走进草丛就可能遇到\n野生宝可梦哦。",
-				"村民：受伤了就回家门口站一站，\n嗯……我是说，去找博士聊聊天。",
+				"村民：每个城镇的宝可梦中心\n都能免费治疗，多多利用吧。",
 			])
 		"rival":
-			if Game.flags.beat_rival:
-				dialog.show_lines(["小烈：我会变强给你看的！\n你也别松懈啊！"])
+			if Game.flags.get("beaten_rival1", false):
+				dialog.show_lines(["小烈：我去联盟特训了！\n山顶见，到时候我可不会留情！"])
 			else:
 				dialog.show_lines(["小烈：站住！", "小烈：要通过这里，\n先赢过我的宝可梦再说！"])
 				await dialog.finished
-				request_battle.emit(get_node("/root/Main")._rival_cfg())
+				request_battle.emit(get_node("/root/Main").rival_cfg())
+
+func _nurse_talk() -> void:
+	dialog.show_lines(["护士：欢迎来到宝可梦中心！\n马上为你的宝可梦恢复体力～"])
+	await dialog.finished
+	Game.heal_party()
+	Game.heal_map = Game.map_id
+	Game.heal_cell = cell
+	dialog.show_lines(["叮咚♪ 宝可梦们都恢复了精神！", "护士：今后如果输掉对战，\n会回到这里重新出发哦。"])
+
+func _shop_talk() -> void:
+	while true:
+		var options: Array = []
+		for id in Db.SHOP_STOCK:
+			var item: Dictionary = Db.ITEMS[id]
+			options.append("%s %d元（持有%d）" % [item.name, int(item.price), int(Game.bag.get(id, 0))])
+		options.append("离开")
+		dialog.show_choice("店员：欢迎光临！（所持金 %d 元）" % Game.money, options)
+		var idx: int = await dialog.chosen
+		if idx >= Db.SHOP_STOCK.size():
+			dialog.show_lines(["店员：欢迎下次再来～"])
+			return
+		var iid: String = Db.SHOP_STOCK[idx]
+		var price := int(Db.ITEMS[iid].price)
+		if Game.money < price:
+			dialog.show_lines(["店员：哎呀，钱不够呢……"])
+			await dialog.finished
+			continue
+		Game.money -= price
+		Game.bag[iid] = int(Game.bag.get(iid, 0)) + 1
+		dialog.show_lines(["买下了 %s！（剩余 %d 元）" % [Db.ITEMS[iid].name, Game.money]])
+		await dialog.finished
+
+func _trainer_talk(tid: String) -> void:
+	var t := Db.trainer(tid)
+	if t.is_empty():
+		return
+	if Game.flags.get("beaten_%s" % tid, false):
+		dialog.show_lines(t.get("after", ["……"]))
+		return
+	dialog.show_lines(t.get("intro", ["来对战吧！"]))
+	await dialog.finished
+	request_battle.emit(get_node("/root/Main").trainer_cfg(tid))
 
 func _pick_starter() -> void:
 	dialog.show_choice("要选择哪一只宝可梦呢？", ["叶芽犬（草）", "炎尾狐（火）", "水灵螈（水）"])
@@ -392,7 +467,8 @@ func _pick_starter() -> void:
 	var ids := ["leafdra", "flarefox", "aquaturt"]
 	var mon: Dictionary = Game.make_monster(ids[idx], 5)
 	Game.add_to_party(mon)
-	Game.flags.got_starter = true
+	Game.mark_caught(ids[idx])
+	Game.flags["got_starter"] = true
 	dialog.show_lines([
 		"你获得了 %s！" % mon.name,
 		"青木博士：再送你 5 个精灵球和 3 瓶伤药。",

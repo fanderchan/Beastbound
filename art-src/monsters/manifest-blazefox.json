@@ -1,0 +1,57 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/mon-blazefox-raw.png",
+  "rows": 1,
+  "cols": 1,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "blazefox",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 1,
+      "selected_component_area": 561877,
+      "selected_component_bbox": [
+        199,
+        47,
+        1386,
+        968
+      ],
+      "crop_bbox": [
+        199,
+        47,
+        1386,
+        968
+      ],
+      "padded_crop_bbox": [
+        191,
+        39,
+        1394,
+        976
+      ],
+      "edge_touch": false,
+      "output_size": [
+        1203,
+        937
+      ],
+      "status": "accepted",
+      "image": "/tmp/monout/blazefox/blazefox/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}

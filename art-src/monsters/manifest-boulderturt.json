@@ -1,0 +1,57 @@
+{
+  "input": "/Users/fander/.cursor/projects/Users-fander-projects-baokemeng/assets/mon-boulderturt-raw.png",
+  "rows": 1,
+  "cols": 1,
+  "threshold": 100,
+  "edge_threshold": 150,
+  "component_mode": "largest",
+  "component_padding": 8,
+  "min_component_area": 100,
+  "edge_touch_margin": 0,
+  "accepted": [
+    {
+      "index": 0,
+      "label": "boulderturt",
+      "grid": [
+        0,
+        0
+      ],
+      "source_box": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "component_mode": "largest",
+      "component_count": 2,
+      "selected_component_area": 639677,
+      "selected_component_bbox": [
+        130,
+        58,
+        1330,
+        963
+      ],
+      "crop_bbox": [
+        130,
+        58,
+        1330,
+        963
+      ],
+      "padded_crop_bbox": [
+        122,
+        50,
+        1338,
+        971
+      ],
+      "edge_touch": false,
+      "output_size": [
+        1216,
+        921
+      ],
+      "status": "accepted",
+      "image": "/tmp/monout/boulderturt/boulderturt/prop.png"
+    }
+  ],
+  "rejected": [],
+  "edge_touch_props": []
+}

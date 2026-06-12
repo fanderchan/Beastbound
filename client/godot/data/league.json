@@ -1,0 +1,36 @@
+{
+	"name": "青峰联盟",
+	"grid": [48, 32],
+	"base": "res://assets/map/league-base.png",
+	"blocked_rects": [
+		[0, 0, 48, 6],
+		[0, 0, 8, 32],
+		[40, 0, 8, 32],
+		[0, 28, 48, 4]
+	],
+	"props": [
+		{"type": "rock", "cell": [12, 10]},
+		{"type": "rock", "cell": [35, 10]},
+		{"type": "rock", "cell": [10, 22]},
+		{"type": "rock", "cell": [37, 22]},
+		{"type": "flower", "cell": [16, 9]},
+		{"type": "flower", "cell": [31, 9]},
+		{"type": "flower", "cell": [14, 24]},
+		{"type": "flower", "cell": [33, 24]},
+		{"type": "tree", "cell": [8, 6]},
+		{"type": "tree", "cell": [37, 6]}
+	],
+	"signs": [
+		{"cell": [20, 20], "lines": ["青峰联盟殿堂\n——只有最强的训练家\n才能站上之巅。"]}
+	],
+	"npcs": [
+		{"id": "champion", "sprite": "rival.png", "cell": [24, 10], "kind": "trainer", "trainer": "champion"},
+		{"id": "nurse_l", "sprite": "nurse.png", "cell": [14, 14], "kind": "nurse"},
+		{"id": "league_staff", "sprite": "villager.png", "cell": [32, 16], "kind": "dialog",
+		 "lines": ["联盟职员：冠军正在殿前等你。", "联盟职员：决战前记得让护士\n恢复宝可梦的状态！"]}
+	],
+	"exits": [
+		{"cells": [[0, 15], [0, 16], [0, 17], [0, 18], [0, 19]], "to": "route4", "spawn": [45, 16], "facing": "left"}
+	],
+	"encounters": []
+}

@@ -4,10 +4,13 @@ extends Node
 
 var shot_path := ""
 var frames_left := -1
-var start_screen := ""   # title / world / battle / rival
+var start_screen := ""   # title / world / battle / rival / trainer / credits
 var pick_starter := -1   # 0/1/2 自动领取御三家
 var start_map := ""
 var start_cell := Vector2i(-1, -1)
+var start_lv := 0                       # 测试用：拔高首发等级
+var start_flags: PackedStringArray = [] # 测试用：预置 flags（逗号分隔）
+var start_trainer := ""                 # 测试用：直接挑战训练家 id
 var auto_confirm := false
 var walk := ""           # 自动走路方向序列，如 "uuuulldd"
 var _ac_t := 0
@@ -41,6 +44,12 @@ func _ready() -> void:
 				auto_confirm = true
 			"--walk":
 				if i + 1 < args.size(): walk = args[i + 1]; i += 1
+			"--lv":
+				if i + 1 < args.size(): start_lv = int(args[i + 1]); i += 1
+			"--flags":
+				if i + 1 < args.size(): start_flags = args[i + 1].split(","); i += 1
+			"--trainer":
+				if i + 1 < args.size(): start_trainer = args[i + 1]; i += 1
 		i += 1
 
 func _process(_delta: float) -> void:

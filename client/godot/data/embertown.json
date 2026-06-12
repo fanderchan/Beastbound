@@ -1,0 +1,49 @@
+{
+	"name": "烬原镇",
+	"grid": [48, 32],
+	"base": "res://assets/map/embertown-base.png",
+	"blocked_rects": [
+		[0, 0, 48, 2],
+		[0, 0, 2, 32],
+		[46, 0, 2, 32],
+		[0, 30, 22, 2],
+		[27, 30, 21, 2]
+	],
+	"props": [
+		{"type": "gym",    "cell": [20, 8]},
+		{"type": "center", "cell": [7, 14]},
+		{"type": "shop",   "cell": [35, 14]},
+		{"type": "house_red", "cell": [10, 5]},
+		{"type": "house_blue", "cell": [33, 5]},
+		{"type": "tree", "cell": [3, 4]},
+		{"type": "tree", "cell": [43, 4]},
+		{"type": "tree", "cell": [2, 20]},
+		{"type": "tree", "cell": [44, 20]},
+		{"type": "rock", "cell": [15, 12]},
+		{"type": "rock", "cell": [31, 12]},
+		{"type": "rock", "cell": [12, 24]},
+		{"type": "rock", "cell": [35, 25]},
+		{"type": "rock", "cell": [28, 19]},
+		{"type": "rock", "cell": [18, 20]},
+		{"type": "bush", "cell": [6, 27]},
+		{"type": "bush", "cell": [41, 27]}
+	],
+	"signs": [
+		{"cell": [22, 26], "lines": ["烬原镇\n——余烬与新生之地。"]},
+		{"cell": [19, 11], "lines": ["烬原宝可梦道馆\n馆主：焰罗\n「让烈焰烧尽天真！」"]},
+		{"cell": [44, 17], "lines": ["→ 东面：胜利之路\n通往青峰联盟（需烬原徽章）"]}
+	],
+	"npcs": [
+		{"id": "gym3", "sprite": "gym3.png", "cell": [23, 11], "kind": "trainer", "trainer": "gym3"},
+		{"id": "nurse3", "sprite": "nurse.png", "cell": [9, 16], "kind": "nurse"},
+		{"id": "clerk3", "sprite": "clerk.png", "cell": [37, 16], "kind": "shop"},
+		{"id": "vill_ember", "sprite": "villager.png", "cell": [29, 22], "kind": "dialog",
+		 "lines": ["老者：焰罗那家伙年轻时\n可是联盟四天王呢。", "老者：水属性和岩石属性的招式\n能压制火属性。"]}
+	],
+	"exits": [
+		{"cells": [[22, 31], [23, 31], [24, 31], [25, 31], [26, 31]], "to": "route3", "spawn": [24, 2], "facing": "down"},
+		{"cells": [[47, 14], [47, 15], [47, 16], [47, 17], [47, 18]], "to": "route4", "spawn": [2, 16], "facing": "right",
+		 "require_flag": "badge3", "deny_lines": ["联盟职员：前方是胜利之路！", "联盟职员：只有持烬原徽章的训练家\n才有资格挑战联盟！"]}
+	],
+	"encounters": []
+}

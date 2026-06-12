@@ -2,10 +2,11 @@ class_name TitleScreen
 extends Control
 # 标题画面
 
-signal start_game
+signal start_game(continue_save: bool)
 
 var _blink_t := 0.0
 var _hint: Label
+var _has_save := false
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -59,14 +60,25 @@ func _ready() -> void:
 	spacer.custom_minimum_size = Vector2(0, 60)
 	vbox.add_child(spacer)
 
+	_has_save = Game.has_save()
 	_hint = Label.new()
-	_hint.text = "按 Z / 回车 / 空格 开始冒险"
+	_hint.text = "按 Z / 回车 / 空格 继续冒险" if _has_save else "按 Z / 回车 / 空格 开始冒险"
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_hint.add_theme_font_size_override("font_size", 30)
 	_hint.add_theme_color_override("font_color", Color(1, 1, 1))
 	_hint.add_theme_constant_override("outline_size", 8)
 	_hint.add_theme_color_override("font_outline_color", Color(0.1, 0.1, 0.2, 0.9))
 	vbox.add_child(_hint)
+
+	if _has_save:
+		var newg := Label.new()
+		newg.text = "按 X 开启新的冒险（覆盖原进度）"
+		newg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		newg.add_theme_font_size_override("font_size", 20)
+		newg.add_theme_color_override("font_color", Color(0.92, 0.92, 0.95, 0.9))
+		newg.add_theme_constant_override("outline_size", 6)
+		newg.add_theme_color_override("font_outline_color", Color(0.1, 0.1, 0.2, 0.8))
+		vbox.add_child(newg)
 
 	var tip := Label.new()
 	tip.text = "WASD/方向键 移动 · Z 确认/对话 · X 取消"
@@ -86,4 +98,6 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("confirm"):
-		start_game.emit()
+		start_game.emit(_has_save)
+	elif event.is_action_pressed("cancel") and _has_save:
+		start_game.emit(false)

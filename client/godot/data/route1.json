@@ -40,13 +40,16 @@
 		{"type": "bush", "cell": [21, 18]}
 	],
 	"signs": [
-		{"cell": [21, 29], "lines": ["1号道路 · 青草小径\n——通往未知的第一步。"]}
+		{"cell": [21, 29], "lines": ["1号道路 · 青草小径\n——通往未知的第一步。"]},
+		{"cell": [21, 4], "lines": ["↑ 北面：岩岸镇\n宝可梦道馆所在地"]}
 	],
 	"npcs": [
 		{"id": "rival", "sprite": "rival.png", "cell": [24, 3]}
 	],
 	"exits": [
-		{"cells": [[22, 31], [23, 31], [24, 31], [25, 31], [26, 31], [27, 31]], "to": "town", "spawn": [26, 2], "facing": "down"}
+		{"cells": [[22, 31], [23, 31], [24, 31], [25, 31], [26, 31], [27, 31]], "to": "town", "spawn": [26, 2], "facing": "down"},
+		{"cells": [[22, 0], [23, 0], [24, 0], [25, 0], [26, 0], [27, 0]], "to": "rocktown", "spawn": [24, 29], "facing": "up",
+		 "require_flag": "beaten_rival1", "deny_lines": ["小烈：想去岩岸镇？\n先过我这关再说！"]}
 	],
 	"encounters": [
 		{"species": "chirpie", "weight": 0.4, "min_lv": 2, "max_lv": 4},
